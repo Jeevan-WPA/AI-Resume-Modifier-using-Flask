@@ -20,9 +20,10 @@ def optimize_resume(job_description: str) -> str:
             Instructions for different sections:
             1. Summary: Rewrite to emphasize relevant experiences to the job description. (3-4 lines)
             2. Experience: Keep titles/companies/dates. Rewrite bullets for relevance. 3-4 bullets per role.
-            3. Skills: Use only the most relevant skills from the job description, incorporating applicable skills from the base section. Organize them into four primary categories with 4–6 skills each. Add 1–2 supplementary categories only if significant additional skill areas are present.
-            4. Do not change formatting or LaTeX structure for the sections.
-            5. Use keywords and terminology from the job posting sparingly to pass ATS.
+            3. Skills: Use only the most relevant skills from the job description, Reformat the section into max 5 categories (4 technical + optional supplementary + 1 soft skills) matching the job description terminology.
+            Common Rules:
+            1. Do not change formatting or LaTeX structure for the sections.
+            2. Use keywords and terminology from the job posting sparingly to pass ATS.
             VERY IMPORTANT: Return ONLY complete LaTeX code, no explanations or markdown formatting based on the given base_section.
 
         """

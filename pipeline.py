@@ -23,8 +23,8 @@ async def run_job_pipeline(url: str):
         save_job(job_details)  # Save to SQLite
 
         optimized_sections = resume_build.optimize_resume(job_details.get("JD", ""))
-
-        dst = Path(OUTPUT_DIR) / f"{job_details['company']}_{job_details['job_title']}_resume"
+        company = job_details.get("company", "UnknownCompany").replace("/", "_").replace(" ", "_")
+        dst = Path(OUTPUT_DIR) / f"{company}_resume"
         dst_src = dst / "src"
         if not dst.exists():
             shutil.copytree(SRC, dst, ignore=shutil.ignore_patterns("summary.tex","experience.tex","skills.tex"))
