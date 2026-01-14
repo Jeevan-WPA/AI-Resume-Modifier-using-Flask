@@ -20,7 +20,6 @@ async def run_job_pipeline(url: str):
         await asyncio.sleep(3)
 
         job_details = await scrape_jd.scrape_jd(page, url)
-        save_job(job_details)  # Save to SQLite
 
         optimized_sections = resume_build.optimize_resume(job_details.get("JD", ""))
         company = job_details.get("company", "UnknownCompany").replace("/", "_").replace(" ", "_")
@@ -35,7 +34,8 @@ async def run_job_pipeline(url: str):
                 f.write(optimized_sections[name])
 
         pdf_path = scrape_jd.save_as_pdf(dst / "resume.tex", output_dir=dst)
-
+        job_details["pdf_path"] = str(pdf_path)
+        save_job(job_details)  # Save to SQLite
         await browser.close()
         chrome.terminate()
         return pdf_path
