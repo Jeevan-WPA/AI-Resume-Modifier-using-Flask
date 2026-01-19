@@ -22,7 +22,7 @@ async def run_job_pipeline(url: str):
         job_details = await scrape_jd.scrape_jd(page, url)
 
         optimized_sections = resume_build.optimize_resume(job_details.get("JD", ""))
-        company = job_details.get("company", "UnknownCompany").replace("/", "_").replace(" ", "_")
+        company = job_details.get("company", "UnknownCompany").replace("/", "_").replace(" ", "_").replace(",", "_")
         dst = Path(OUTPUT_DIR) / f"{company}_resume"
         dst_src = dst / "src"
         if not dst.exists():
