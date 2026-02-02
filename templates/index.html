@@ -21,14 +21,38 @@
             style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: var(--accent); opacity: 0.2; filter: blur(40px); border-radius: 50%;">
         </div>
 
+        <!-- Mode Toggle -->
+        <div
+            style="display: flex; background: rgba(0,0,0,0.2); padding: 4px; border-radius: 12px; margin-bottom: 1.5rem; position: relative; z-index: 2;">
+            <button class="toggle-btn active" id="btn-url" onclick="switchMode('url')"
+                style="flex: 1; border: none; background: transparent; color: var(--text-muted); padding: 0.6rem; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
+                <i class="fa-solid fa-link"></i> Web Link
+            </button>
+            <button class="toggle-btn" id="btn-text" onclick="switchMode('text')"
+                style="flex: 1; border: none; background: transparent; color: var(--text-muted); padding: 0.6rem; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
+                <i class="fa-solid fa-file-text"></i> Paste Text
+            </button>
+        </div>
+
         <form method="post" id="resumeForm"
             style="display: flex; flex-direction: column; gap: 1.5rem; position: relative; z-index: 2;">
-            <div style="text-align: left;">
+
+            <!-- URL Input Section -->
+            <div id="url-section" style="text-align: left;">
                 <label for="url"
                     style="display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; color: var(--text-muted);">Job
                     Description URL</label>
-                <input type="url" name="url" id="url" class="glass-input" placeholder="https://indeed.com/viewjob..."
-                    required>
+                <input type="url" name="url" id="url" class="glass-input" placeholder="https://indeed.com/viewjob...">
+            </div>
+
+            <!-- Text Input Section (Hidden by default) -->
+            <div id="text-section" style="text-align: left; display: none;">
+                <label for="job_text"
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; color: var(--text-muted);">Paste
+                    Job Details</label>
+                <textarea name="job_text" id="job_text" class="glass-input" rows="6"
+                    placeholder="Paste the entire job description here..."
+                    style="resize: vertical; min-height: 120px; font-family: inherit;"></textarea>
             </div>
 
             <button type="submit" class="btn-premium" id="generateBtn">
@@ -64,6 +88,43 @@
 
 {% block scripts %}
 <script>
+    function switchMode(mode) {
+        // Toggle Buttons
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.style.background = 'transparent';
+            btn.style.color = 'var(--text-muted)';
+            btn.style.boxShadow = 'none';
+        });
+
+        const activeBtn = document.getElementById(mode === 'url' ? 'btn-url' : 'btn-text');
+        activeBtn.style.background = 'var(--bg-card)';
+        activeBtn.style.color = 'var(--text-main)';
+        activeBtn.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+
+        // Toggle Sections
+        const urlSec = document.getElementById('url-section');
+        const textSec = document.getElementById('text-section');
+        const urlInput = document.getElementById('url');
+        const textInput = document.getElementById('job_text');
+
+        if (mode === 'url') {
+            urlSec.style.display = 'block';
+            textSec.style.display = 'none';
+            urlInput.required = true;
+            textInput.required = false;
+            textInput.value = ''; // clear
+        } else {
+            urlSec.style.display = 'none';
+            textSec.style.display = 'block';
+            urlInput.required = false;
+            textInput.required = true;
+            urlInput.value = ''; // clear
+        }
+    }
+
+    // Initialize state
+    switchMode('url');
+
     document.getElementById('resumeForm').addEventListener('submit', function () {
         const btn = document.getElementById('generateBtn');
         const btnText = document.getElementById('btnText');

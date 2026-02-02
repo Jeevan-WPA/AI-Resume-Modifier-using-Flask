@@ -13,10 +13,14 @@ init_db()  # Create DB tables if not exists
 def home():
     if request.method == "POST":
         job_url = request.form.get("url")
-        if not job_url:
-            return render_template("error.html", message="No URL provided")
+        job_text = request.form.get("job_text")
+        
+        if not job_url and not job_text:
+            return render_template("error.html", message="Please provide a URL or paste Job Description text.")
+        
         try:
-            pdf_path = run_pipeline(job_url)
+            # Pass both; logic inside pipeline handles which one is used
+            pdf_path = run_pipeline(url=job_url, raw_text=job_text)
             return render_template("success.html", pdf_path=pdf_path)
         except Exception as e:
             return render_template("error.html", message=str(e))
