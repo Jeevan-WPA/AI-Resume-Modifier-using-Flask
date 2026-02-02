@@ -1,89 +1,60 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Job History</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            min-height: 100vh;
-            background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
-            background-size: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255,255,255,0.7);
-            z-index: 0;
-        }
-        .main-card {
-            position: relative;
-            z-index: 1;
-            background: rgba(255,255,255,0.97);
-            border-radius: 1rem;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-            padding: 2.5rem 2rem;
-            max-width: 900px;
-            margin: auto;
-        }
-        h2 {
-            font-weight: 700;
-            color: #2c3e50;
-        }
-        .table {
-            background: white;
-            border-radius: 0.5rem;
-            overflow: hidden;
-        }
-        .btn-lg, .btn-sm {
-            border-radius: 0.5rem;
-        }
-        @media (max-width: 900px) {
-            .main-card { padding: 1.5rem 0.5rem; max-width: 100vw; }
-        }
-    </style>
-</head>
-<body>
-    <div class="overlay"></div>
-    <div class="main-card shadow-lg mx-auto">
-        <h2 class="mb-4 text-center">Job History</h2>
-        {% if jobs %}
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th><th>Company</th><th>Job Title</th><th>Location</th><th>Date Applied</th><th>URL</th><th>Resume</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for job in jobs %}
-                    <tr>
-                        <td>{{ job[0] }}</td>
-                        <td>{{ job[1] }}</td>
-                        <td>{{ job[2] }}</td>
-                        <td>{{ job[3] }}</td>
-                        <td>{{ job[4] }}</td>
-                        <td><a href="{{ job[5] }}" target="_blank">Link</a></td>
-                        <td>
-                                <a href="/view_resume/{{ job[0] }}"
-                                class="btn btn-sm btn-primary"
-                                target="_blank">
-                                    View Resume
-                                </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <p class="text-center">No jobs applied yet.</p>
-        {% endif %}
-        <div class="text-center mt-3">
-            <a href="/" class="btn btn-primary btn-lg">Back Home</a>
-        </div>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="animate-fade-in" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 2rem;">
+        <h2 style="font-size: 2rem;">Application History</h2>
+        <a href="/" class="btn-secondary" style="font-size: 0.9rem;">
+            <i class="fa-solid fa-plus"></i> New Resume
+        </a>
     </div>
-</body>
-</html>
+
+    {% if jobs %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; width: 100%;">
+        {% for job in jobs %}
+        <div class="glass-panel"
+            style="padding: 1.5rem; border: 1px solid var(--glass-border); transition: var(--transition);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-main);">{{ job[2] }}</h3>
+                <span
+                    style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc; font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 4px;">#{{
+                    job[0] }}</span>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.25rem;">
+                    <i class="fa-regular fa-building" style="width: 20px;"></i> {{ job[1] }}
+                </p>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.25rem;">
+                    <i class="fa-solid fa-map-pin" style="width: 20px;"></i> {{ job[3] }}
+                </p>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">
+                    <i class="fa-regular fa-calendar" style="width: 20px;"></i> {{ job[4] }}
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem;">
+                <a href="/view_resume/{{ job[0] }}" target="_blank" class="btn-premium"
+                    style="flex: 1; font-size: 0.9rem; padding: 0.6rem;">
+                    <i class="fa-regular fa-eye"></i> View
+                </a>
+                <a href="{{ job[5] }}" target="_blank" class="btn-secondary" style="padding: 0.6rem 0.8rem;"
+                    title="View Job Post">
+                    <i class="fa-solid fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="glass-panel" style="padding: 3rem; text-align: center; max-width: 500px;">
+        <i class="fa-regular fa-folder-open"
+            style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+        <h3 style="color: var(--text-muted);">No history found</h3>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">You haven't generated any resumes yet.</p>
+        <a href="/" class="btn-premium">Generate Your First Resume</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

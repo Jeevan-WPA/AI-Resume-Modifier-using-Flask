@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI Resume Modifier{% endblock %}</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    
+    <!-- Background Elements -->
+    <div style="position: fixed; top: -10%; left: -10%; width: 500px; height: 500px; background: var(--primary); filter: blur(150px); opacity: 0.2; border-radius: 50%; z-index: -1;"></div>
+    <div style="position: fixed; bottom: -10%; right: -10%; width: 600px; height: 600px; background: var(--secondary); filter: blur(150px); opacity: 0.15; border-radius: 50%; z-index: -1;"></div>
+
+    <nav style="padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; width: 100%;">
+        <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary); font-size: 1.5rem;"></i>
+            <span style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">Resume<span class="text-gradient">AI</span></span>
+        </a>
+        <a href="/history" class="btn-secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+            <i class="fa-solid fa-clock-rotate-left"></i> &nbsp; History
+        </a>
+    </nav>
+
+    <main class="app-container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">
+        <p>&copy; 2024 AI Resume Modifier. Built with ⚡ Flask & AI.</p>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
